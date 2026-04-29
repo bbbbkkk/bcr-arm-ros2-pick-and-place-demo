@@ -1,0 +1,133 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="empty">
+
+    <!-- 如有需要，先关闭重力，方便第一阶段调试控制链路 -->
+    <gravity>0 0 0</gravity>
+
+    <physics name="1ms" type="dart">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <!-- 加载物理系统插件：计算碰撞、重力、惯性、关节运动 -->
+    <plugin
+      filename="ignition-gazebo-physics-system"
+      name="ignition::gazebo::systems::Physics">
+    </plugin>
+
+    <!-- 处理用户在 Gazebo 界面上的交互事件 -->
+    <plugin
+      filename="ignition-gazebo-user-commands-system"
+      name="ignition::gazebo::systems::UserCommands">
+    </plugin>
+
+    <!-- 把 Gazebo 仿真场景的状态信息发布到 ROS 2 话题上 -->
+    <plugin
+      filename="ignition-gazebo-scene-broadcaster-system"
+      name="ignition::gazebo::systems::SceneBroadcaster">
+    </plugin>
+
+    <!-- 仿真世界的光源定义（太阳光） -->
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <!-- 地面模型 -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+
+        <!-- 碰撞：透明但能碰到 -->
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>10 10</size>
+            </plane>
+          </geometry>
+        </collision>
+
+        <!-- 视觉：灰色平面，能看见 -->
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>10 10</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+          </material>
+        </visual>
+
+      </link>
+    </model>
+        <!-- 桌面 / 工作台 -->
+    <model name="table">
+      <static>true</static>
+
+      <!-- pose: x y z roll pitch yaw -->
+      <!-- box 几何体默认以自身中心为原点，所以 z=0.025 表示高度 0.05 的桌面放在地面上 -->
+      <pose>0.4 0 0.025 0 0 0</pose>
+
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.2 1.2 0.05</size>
+            </box>
+          </geometry>
+        </collision>
+
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.2 1.2 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.0 0.8 0.0 1.0</ambient>
+            <diffuse>0.0 0.8 0.0 1.0</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- 障碍物盒子 -->
+    <model name="box_obstacle">
+      <static>true</static>
+
+      <!-- table 顶面高度是 0.05，盒子高度 0.40，所以中心 z = 0.05 + 0.40 / 2 = 0.25 -->
+      <pose>0.45 0 0.25 0 0 0</pose>
+
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.20 0.20 0.40</size>
+            </box>
+          </geometry>
+        </collision>
+
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.20 0.20 0.40</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>1.0 0.2 0.2 1.0</ambient>
+            <diffuse>1.0 0.2 0.2 1.0</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    
+  </world>
+</sdf>

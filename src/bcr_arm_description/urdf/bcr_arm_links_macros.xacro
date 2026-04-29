@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- 引入惯性计算宏 -->
+  <xacro:include filename="$(find bcr_arm_description)/urdf/bcr_arm_inertial_macros.xacro"/>
+
+  <!-- 圆柱连杆宏 -->
+  <xacro:macro name="cylinder_link" params="name length radius color mass">
+    <link name="${name}">
+      <visual>
+        <origin xyz="0 0 ${length / 2.0}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${radius}" length="${length}"/>
+        </geometry>
+        <material name="${color}"/>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 ${length / 2.0}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${radius}" length="${length}"/>
+        </geometry>
+      </collision>
+
+      <xacro:cylinder_inertial mass="${mass}" radius="${radius}" length="${length}"/>
+    </link>
+  </xacro:macro>
+
+</robot>

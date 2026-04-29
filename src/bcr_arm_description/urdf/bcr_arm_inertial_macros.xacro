@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ========================= -->
+  <!-- Inertial helper 惯性参数-->
+  <!-- ========================= -->
+
+  <!-- 圆柱的转动参数 -->
+  <xacro:macro name="cylinder_inertial" params="mass radius length">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${mass}"/>
+      <inertia
+        ixx="${mass * (3.0 * radius * radius + length * length) / 12.0}"
+        iyy="${mass * (3.0 * radius * radius + length * length) / 12.0}"
+        izz="${mass * radius * radius / 2.0}"
+        ixy="0.0"
+        ixz="0.0"
+        iyz="0.0"/>
+    </inertial>
+  </xacro:macro>
+
+  <!-- 长方体的转动参数 -->
+  <xacro:macro name="box_inertial" params="mass x y z">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${mass}"/>
+    <!-- 转动惯性 -->
+     <!-- 这里需要六个参数来描述物体的转动惯性，是一个3×3的对称矩阵 -->
+      <!-- ixx  ixy  ixz
+           ixy  iyy  iyz
+           ixz  iyz  izz -->
+      <!--ixx是绕x轴的运动  -->
+      <!-- ixy=0 旋转是正的，绕x轴旋转不会歪的y轴上 -->
+      <inertia
+        ixx="${mass * (y*y + z*z) / 12.0}"
+        iyy="${mass * (x*x + z*z) / 12.0}"
+        izz="${mass * (x*x + y*y) / 12.0}"
+        ixy="0.0"
+        ixz="0.0"
+        iyz="0.0"/>
+    </inertial>
+  </xacro:macro>
+
+</robot>

@@ -1,0 +1,72 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+    
+    # https://github.com/ros-controls/ros2_controllers/blob/master/joint_state_broadcaster/joint_state_plugin.xml
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    #https://github.com/ros-controls/ros2_controllers/blob/master/joint_trajectory_controller/joint_trajectory_plugin.xml
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+joint_trajectory_controller:
+  ros__parameters:
+    joints:
+    # 这里的joint1-joint7需要和urdf文件中定义的关节名称一致
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+      - joint6
+      - joint7
+    # 输出
+    command_interfaces:
+      - position
+    # 输入
+    state_interfaces:
+      - position
+      - velocity
+    # 每次发轨迹时，必须包含所有关节的目标值，否则会报错
+    allow_partial_joints_goal: false
+    # 有输入和输出，闭环
+    open_loop_control: false
+
+    constraints:
+    # 位置先达标，速度再确认
+    # 所有环节的速度低于0.01rad/s时，认为已经停止了
+      stopped_velocity_tolerance: 0.05
+    # 到达目标后，必须在这个时间（3秒）内稳定下来，才算“成功到达”
+    # 如果一直在目标附近震荡，超过这个时间还没有稳定下来，就算“未能成功到达”
+      goal_time: 3.0
+      # 误差容忍度：单位rad
+      # trajectory: 0.2 → 运动过程中，位置误差不超过 0.2 rad
+      # goal: 0.1 → 终点稳定后，位置误差不超过 0.1 rad
+      joint1:
+        trajectory: 0.2
+        goal: 0.1
+
+      joint2:
+        trajectory: 0.2
+        goal: 0.1
+
+      joint3:
+        trajectory: 0.2
+        goal: 0.1
+
+      joint4:
+        trajectory: 0.2
+        goal: 0.1
+
+      joint5:
+        trajectory: 0.2
+        goal: 0.1
+
+      joint6:
+        trajectory: 0.2
+        goal: 0.1
+
+      joint7:
+        trajectory: 0.2
+        goal: 0.1

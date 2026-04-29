@@ -1,0 +1,2 @@
+使用添加碰撞物的脚本需要赋予执行权限
+chmod +x scripts/add_collision_objects.py

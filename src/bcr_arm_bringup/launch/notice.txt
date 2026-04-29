@@ -1,0 +1,8 @@
+bcr_arm_bringup.py一键启动包含以下:
+Gazebo 启动
+机械臂出现
+Gazebo 中出现 table / box_obstacle
+move_group 启动
+RViz 启动
+add_collision_objects.py 自动运行
+RViz 中出现 PlanningScene 障碍物

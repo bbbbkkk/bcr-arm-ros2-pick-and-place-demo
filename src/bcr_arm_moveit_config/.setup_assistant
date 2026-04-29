@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: bcr_arm_description
+    relative_path: urdf/bcr_arm.urdf
+  srdf:
+    relative_path: config/bcr_arm.srdf
+  package_settings:
+    author_name: bbbkkk
+    author_email: sbkhao666@gmail.com
+    generated_timestamp: 1777347202
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
