@@ -444,52 +444,7 @@ docker exec -it bcr_arm_dev bash
 
 ---
 
-### 10.2 Docker 镜像拉取失败
-
-可以手动拉取：
-
-```bash
-docker pull carson0301/bcr_arm:humble-dev
-```
-
-如果出现 registry mirror 403，例如：
-
-```text
-docker.m.daocloud.io 403 Forbidden
-```
-
-说明 Docker daemon 走了第三方镜像源，该镜像源可能无法代理个人仓库。
-
-可以临时移除 `/etc/docker/daemon.json` 中的 `registry-mirrors`，然后重启 Docker。
-
-示例：
-
-```bash
-sudo cp /etc/docker/daemon.json /etc/docker/daemon.json.bak
-
-sudo tee /etc/docker/daemon.json <<'INNER_EOF'
-{
-  "log-driver": "json-file",
-  "log-opts": {
-    "max-size": "100m",
-    "max-file": "3"
-  }
-}
-INNER_EOF
-
-sudo systemctl daemon-reload
-sudo systemctl restart docker
-```
-
-然后重新拉取：
-
-```bash
-docker pull carson0301/bcr_arm:humble-dev
-```
-
----
-
-### 10.3 编译时报 rosdep 问题
+### 10.2 编译时报 rosdep 问题
 
 如果 `rosdep update` 网络超时，可以先跳过 rosdep，直接编译：
 
@@ -503,61 +458,8 @@ source install/setup.bash
 
 ---
 
-### 10.4 夹爪只有 visual，没有 collision
 
-如果日志中出现：
-
-```text
-gripper_left_finger_link has visual geometry but no collision geometry
-gripper_right_finger_link has visual geometry but no collision geometry
-```
-
-说明夹爪没有物理碰撞体，Gazebo 中无法真实夹住木块。
-
-需要检查：
-
-```text
-bcr_arm_description
-gripper xacro
-left_finger_link
-right_finger_link
-```
-
-确认左右夹爪 link 都包含 `<collision>`。
-
----
-
-### 10.5 夹爪 action abort
-
-检查 gripper controller：
-
-```bash
-ros2 control list_controllers
-ros2 control list_hardware_interfaces | grep gripper
-ros2 topic echo /joint_states
-```
-
-可以单独测试夹爪：
-
-```bash
-ros2 action send_goal /gripper_controller/follow_joint_trajectory control_msgs/action/FollowJointTrajectory "{
-  trajectory: {
-    joint_names: ['gripper_left_finger_joint', 'gripper_right_finger_joint'],
-    points: [
-      {
-        positions: [0.035, 0.035],
-        time_from_start: {sec: 5, nanosec: 0}
-      }
-    ]
-  }
-}"
-```
-
-如果手动命令成功，但 demo 失败，需要检查 demo 中夹爪打开/闭合时机和 Gazebo 物理状态。
-
----
-
-### 10.6 RViz 和 Gazebo 中物体位置不一致
+### 10.3 RViz 和 Gazebo 中物体位置不一致
 
 Gazebo 中的物体来自 world 文件。
 
@@ -576,57 +478,7 @@ RViz / MoveIt 中的物体来自 PlanningScene 脚本。
 
 ---
 
-## 11. Docker Compose 文件说明
-
-本项目的 `docker-compose.yml` 使用预构建 Docker Hub 镜像：
-
-```yaml
-image: carson0301/bcr_arm:humble-dev
-```
-
-并挂载当前项目源码：
-
-```yaml
-volumes:
-  - .:/workspace/my_brc_arm_ws
-```
-
-这意味着：
-
-```text
-Docker 镜像负责提供 ROS2 / MoveIt2 / Gazebo 环境
-GitHub 仓库负责提供项目源码
-容器启动后，需要在容器内 colcon build
-```
-
-这种方式适合开发和复现。
-
----
-
-## 12. 从源码重新构建 Docker 镜像
-
-如果不想使用 Docker Hub 上的镜像，也可以本地重新构建：
-
-```bash
-docker compose build
-```
-
-或者：
-
-```bash
-docker build -f docker/Dockerfile.humble -t bcr_arm:humble-dev .
-```
-
-构建完成后启动：
-
-```bash
-docker compose up -d bcr_arm_dev
-docker exec -it bcr_arm_dev bash
-```
-
----
-
-## 13. 项目当前状态
+## 11. 项目当前状态
 
 当前版本已完成：
 
@@ -644,18 +496,5 @@ Docker Hub 开发环境镜像
 
 ---
 
-## 14. 后续优化方向
 
-后续可以继续优化：
-
-```text
-1. 一键 bringup 启动
-2. 参数化 pick / place 位置
-3. 抓取成功检测
-4. MoveIt Task Constructor
-5. 随机木块位置抓取
-6. 摄像头 / AprilTag / 点云感知
-7. Isaac Sim 复现
-8. Release Docker 镜像一键运行
-```
 
