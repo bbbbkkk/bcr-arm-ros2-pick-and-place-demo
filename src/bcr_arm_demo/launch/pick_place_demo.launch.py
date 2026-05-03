@@ -15,10 +15,10 @@ def generate_launch_description():
         .to_moveit_configs()
     )
 
-    reach_target_demo_node = Node(
+    pick_place_demo_node = Node(
         package="bcr_arm_demo",
-        executable="reach_target_demo",
-        name="reach_target_demo",
+        executable="pick_place_demo",
+        name="pick_place_demo",
         output="screen",
         parameters=[
             moveit_config.to_dict(),
@@ -27,5 +27,5 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        reach_target_demo_node
+        pick_place_demo_node
     ])

@@ -8,6 +8,8 @@ controller_manager:
     #https://github.com/ros-controls/ros2_controllers/blob/master/joint_trajectory_controller/joint_trajectory_plugin.xml
     joint_trajectory_controller:
       type: joint_trajectory_controller/JointTrajectoryController
+    gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
 
 
 joint_trajectory_controller:
@@ -70,3 +72,32 @@ joint_trajectory_controller:
       joint7:
         trajectory: 0.2
         goal: 0.1
+
+        
+gripper_controller:
+  ros__parameters:
+    joints:
+      - gripper_left_finger_joint
+      - gripper_right_finger_joint
+
+    command_interfaces:
+      - position
+
+    state_interfaces:
+      - position
+      - velocity
+
+    allow_partial_joints_goal: false
+    open_loop_control: false
+
+    constraints:
+      stopped_velocity_tolerance: 0.10
+      goal_time: 2.0
+
+      gripper_left_finger_joint:
+        trajectory: 0.05
+        goal: 0.01
+
+      gripper_right_finger_joint:
+        trajectory: 0.05
+        goal: 0.01

@@ -66,5 +66,6 @@ def generate_launch_description():
         start_gazebo,
         start_move_group,
         start_rviz,
+
         add_collision_objects,
     ])

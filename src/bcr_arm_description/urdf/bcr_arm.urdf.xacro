@@ -4,7 +4,7 @@
 <xacro:include filename="$(find bcr_arm_description)/urdf/bcr_arm_ros2_controllers.xacro"/>
 <xacro:include filename="$(find bcr_arm_description)/urdf/bcr_arm_materials.xacro"/>
 <xacro:include filename="$(find bcr_arm_description)/urdf/bcr_arm_links_macros.xacro"/>
-  
+<xacro:include filename="$(find bcr_arm_description)/urdf/gripper.xacro"/>
 
   <!-- ========================= -->
   <!-- Fixed world frame for Gazebo -->
@@ -97,7 +97,7 @@
     <child link="link3"/>
     <origin xyz="0 0 0.35" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-2.2" upper="2.2" effort="100.0" velocity="1.5"/>
+    <limit lower="-3.1416" upper="3.1416" effort="100.0" velocity="1.5"/>
   </joint>
 
   <!-- joint4: wrist roll -->
@@ -115,7 +115,7 @@
     <child link="link5"/>
     <origin xyz="0 0 0.25" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-2.2" upper="2.2" effort="80.0" velocity="1.5"/>
+    <limit lower="-3.1416" upper="3.1416" effort="80.0" velocity="1.5"/>
   </joint>
 
   <!-- joint6: wrist roll -->
@@ -133,7 +133,7 @@
     <child link="link7"/>
     <origin xyz="0 0 0.16" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
-    <limit lower="-2.2" upper="2.2" effort="60.0" velocity="1.5"/>
+    <limit lower="-3.1416" upper="3.1416" effort="60.0" velocity="1.5"/>
   </joint>
 
   <!-- fixed tool joint -->
@@ -142,6 +142,7 @@
     <child link="tool0"/>
     <origin xyz="0 0 0.12" rpy="0 0 0"/>
   </joint>
+  <xacro:bcr_arm_fixed_gripper parent_link="tool0" prefix="gripper_"/>
 
 <!-- ros2_control 硬件接口 + Gazebo 插件 -->
 <!-- 加载控制器配置文件，连接仿真器与控制系统 -->

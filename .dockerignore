@@ -1,0 +1,12 @@
+build/
+install/
+log/
+.git/
+.vscode/
+*.bag
+*.db3
+*.mp4
+*.avi
+*.zip
+*.tar
+*.tar.gz

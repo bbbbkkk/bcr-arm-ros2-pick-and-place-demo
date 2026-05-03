@@ -1,2 +1,0 @@
-使用控制脚本需要赋予执行权限
-chmod +x ~/my_brc_arm_ws/src/bcr_arm_gazebo/scripts/control_arm_cli.py

@@ -54,14 +54,30 @@
         <state_interface name="position"/>
         <state_interface name="velocity"/>
       </joint>
+
+       <!-- gripper joints -->
+      <joint name="gripper_left_finger_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
+
+      <joint name="gripper_right_finger_joint">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+      </joint>
     </ros2_control>
 
-    <!-- Gazebo 插件，加载控制器 YAML 配置 -->
+     
+
+
     <gazebo>
       <plugin filename="ign_ros2_control-system"
               name="ign_ros2_control::IgnitionROS2ControlPlugin">
         <parameters>$(find bcr_arm_gazebo)/config/ros2_controllers.yaml</parameters>
       </plugin>
+
     </gazebo>
   </xacro:macro>
 

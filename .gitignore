@@ -1,36 +1,38 @@
-# colcon build outputs
+# ROS2 build outputs
 build/
 install/
 log/
 
-# Python cache
-__pycache__/
-*.pyc
-*.pyo
+# Generated or temporary files
+src/build/
+src/install/
+src/log/
+*.bak
+*.tmp
 
-# CMake
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-Makefile
-
-# VSCode
-.vscode/
-*.code-workspace
-
-# System files
-.DS_Store
-Thumbs.db
-
-# ROS logs
-*.log
-
-# Gazebo / Ignition cache
-.gazebo/
-.ignition/
-.gz/
-
-# ROS bag / large data
+# Bags / database / videos
 *.bag
 *.db3
 *.mcap
+*.mp4
+*.avi
+*.mov
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Editor
+.vscode/
+.idea/
+__pycache__/
+*.pyc
+
+# Docker local files
+*.tar
+*.tar.gz
+
+# Generated URDF
+src/bcr_arm_description/urdf/bcr_arm.urdf

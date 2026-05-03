@@ -100,6 +100,17 @@ def generate_launch_description():
         ],
         output='screen'
     )
+    # 夹爪控制器
+    gripper_controller_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            'gripper_controller',
+            '--controller-manager',
+            '/controller_manager'
+        ],
+        output='screen'
+    )
 
     return LaunchDescription([
         gazebo,
@@ -109,4 +120,5 @@ def generate_launch_description():
         TimerAction(period=3.0, actions=[spawn_robot]),
         TimerAction(period=6.0, actions=[joint_state_broadcaster_spawner]),
         TimerAction(period=7.0, actions=[joint_trajectory_controller_spawner]),
+        TimerAction(period=8.0, actions=[gripper_controller_spawner]),
     ])

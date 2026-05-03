@@ -1,0 +1,37 @@
+services:
+  bcr_arm_dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.humble
+      args:
+        USERNAME: ros
+        USER_UID: 1000
+        USER_GID: 1000
+
+    image: bcr_arm:humble-dev
+    container_name: bcr_arm_dev
+
+    network_mode: host
+    ipc: host
+    privileged: true
+
+    environment:
+      DISPLAY: ${DISPLAY}
+      QT_X11_NO_MITSHM: "1"
+      LIBGL_ALWAYS_SOFTWARE: "1"
+      QT_OPENGL: software
+      QT_XCB_GL_INTEGRATION: none
+      XDG_RUNTIME_DIR: /tmp/runtime-ros
+      RMW_IMPLEMENTATION: rmw_cyclonedds_cpp
+
+    volumes:
+      - .:/workspace/my_brc_arm_ws
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /dev/dri:/dev/dri
+
+    working_dir: /workspace/my_brc_arm_ws
+
+    stdin_open: true
+    tty: true
+
+    command: bash
