@@ -1,14 +1,6 @@
 services:
   bcr_arm_dev:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.humble
-      args:
-        USERNAME: ros
-        USER_UID: 1000
-        USER_GID: 1000
-
-    image: bcr_arm:humble-dev
+    image: carson0301/bcr_arm:humble-dev
     container_name: bcr_arm_dev
 
     network_mode: host
